@@ -1,20 +1,52 @@
 import { nanoid } from 'nanoid';
 import { Component } from 'react';
+// import { ToastContainer, toast } from 'react-toastify';
+
 import { PhonebookForm } from './PhonebookForm/PhonebookForm';
 import { Section } from './Section/Section';
 import { Filter } from './Filter/Filter';
 import { ContactsList } from './ContactsList/ContactsList';
 
+// import 'react-toastify/dist/ReactToastify.css';
+
+const LOCAL_STORAGE_KEY = 'contacts';
+
 export class App extends Component {
   state = {
     contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Larry Copeland', number: '287-91-26' },
+      // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      // { id: 'id-4', name: 'Larry Copeland', number: '287-91-26' },
     ],
     filter: '',
   };
+
+  componentDidMount() {
+    const localData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if (localData === null || localData.length === 0) {
+      // return this.notify();
+      return;
+    }
+    if (localData.length > 0 || localData !== null) {
+      this.setState({ contacts: [...localData] });
+      return;
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(
+        LOCAL_STORAGE_KEY,
+        JSON.stringify(this.state.contacts)
+      );
+      return;
+    }
+  }
+
+  // notify = () => {
+  //   return toast('Your phonebook is empty, add some contact.');
+  // };
 
   handleDelete = id => {
     const newArr = this.state.contacts.filter(el => {
@@ -67,8 +99,10 @@ export class App extends Component {
 
   render() {
     const { filter } = this.state;
+
     return (
       <>
+        {/* <ToastContainer /> */}
         <Section majorTitle={'Phonebook'}>
           <PhonebookForm onSubmit={this.handleSubmit} />
         </Section>
