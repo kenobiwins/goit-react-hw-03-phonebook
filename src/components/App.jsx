@@ -24,13 +24,16 @@ export class App extends Component {
 
   componentDidMount() {
     const localData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (localData === null || localData.length === 0) {
-      // return this.notify();
-      return;
-    }
-    if (localData.length > 0 || localData !== null) {
-      this.setState({ contacts: [...localData] });
-      return;
+    // if (localData === null || localData.length === 0) {
+    //   // return this.notify();
+    //   return;
+    // }
+    // if (localData.length > 0 || localData !== null) {
+    //   this.setState({ contacts: [...localData] });
+    //   return;
+    // }
+    if (localData) {
+      return this.setState({ contacts: [...localData] });
     }
   }
 
@@ -40,7 +43,6 @@ export class App extends Component {
         LOCAL_STORAGE_KEY,
         JSON.stringify(this.state.contacts)
       );
-      return;
     }
   }
 
